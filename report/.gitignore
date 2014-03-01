@@ -1,0 +1,13 @@
+# LaTeX Intermediary Files
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+
+*.bbl
+*-blx.bib
+*.blg
+*.run.xml
