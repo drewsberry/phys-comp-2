@@ -1,5 +1,9 @@
-# Ignore created encapsulated  postscript graphs
+# Created encapsulated postscript graphs
 *.eps
 
-# Ignore created animation videos
+# Created animation videos
 *.mp4
+*.gif
+
+# Intermediary animation files
+*.png
