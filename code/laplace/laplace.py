@@ -5,10 +5,11 @@ import argparse
 # Custom libraries
 import laplace_solve as lps
 import laplace_plot as lpp
+import laplace_io as lpio
 
 parser = argparse.ArgumentParser(description='Solving Laplace equation in two dimensions.')
 
-parser.add_argument('-i','--input', action='store_true',
+parser.add_argument('-i','--input',
 					help='take boundary conditions from matrix input file')
 
 parser.add_argument('-o','--output', 
@@ -22,11 +23,13 @@ parser.add_argument('-b','--boundary',
 parser.add_argument('-e', '--error', type=int, default=1e-2,
 					help='change the absolute error tolerance for convergence.')
 
-parser.add_argument('-x', '--xnum', type=int, default=50,
-					help='change the number of x nodes in the grid.')
+parser.add_argument('-x', '--xnum', type=int, default=50, help='''
+					change the number of x nodes in the grid. Normal values are
+					between 25 and 100.''')
 
-parser.add_argument('-y', '--ynum', type=int, default=50,
-					help='change the number of y nodes in the grid.')
+parser.add_argument('-y', '--ynum', type=int, default=50, help='''
+					change the number of y nodes in the grid. Normal values are
+					between 25 and 100''')
 
 parser.add_argument('-p', '--plot', action="store_true",
 					help='plot resulting solution to eps file.')
@@ -40,8 +43,8 @@ spacing = 1/128
 matrix = None
 
 if args.input:
-	print "Taking input boundary conditions from file {0}".format(args.input),
-	matrix, args.xnum, args.ynum = lps.input_matrix("input_matrix.dat")
+	print "Taking input boundary conditions from file {0}... ".format(args.input),
+	matrix, args.xnum, args.ynum = lpio.input_matrix(args.input)
 	print "done"
 
 print "Iteratively solving Laplace's equation... "
@@ -56,10 +59,10 @@ if args.plot:
 
 if args.output:
 	print "Printing solution to file... ",
-	lps.print_matrix_to_file(solution, args.output)
+	lpio.print_matrix_to_file(solution, args.output)
 	print "done"
 
 if args.printout:
 	print "Printing solution to stdout... "
-	lps.print_matrix(solution)
+	lpio.print_matrix(solution)
 	print "... done"

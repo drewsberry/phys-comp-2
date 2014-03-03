@@ -3,7 +3,6 @@ from __future__ import division # Division always returns float
 
 import numpy as np
 import sys
-import os.path
 
 def impose_boundary(grid, num_x, num_y, input_boundaries=None, conditions=None):
     # Set the specified boundary conditions, with known in-built conditions and
@@ -46,10 +45,10 @@ def impose_boundary(grid, num_x, num_y, input_boundaries=None, conditions=None):
         num_cols = input_boundaries.shape[0]
         num_rows = input_boundaries.shape[1]
 
-        for i in range(num_cols):
-            for j in range(num_rows):
-                if input_boundaries[i,j] != "None":
-                    grid[i,j] = input_boundaries[i,j]
+        for i in range(num_rows):
+            for j in range(num_cols):
+                if input_boundaries[j,i] != "None":
+                    grid[i,j] = input_boundaries[j,i]
                     num_boundary_nodes += 1
 
         return num_boundary_nodes
@@ -89,73 +88,6 @@ def iterate_node(grid, i, j, num_x, num_y):
     left  = grid[i-1,j] if i > 0 else 0
 
     return (above + below + left + right) / 4
-
-def print_matrix(matrix):
-    # Print matrix neatly to stdout
-
-    num_cols = matrix.shape[0]
-    num_rows = matrix.shape[1]
-
-    for i in range(num_cols):
-        for j in range(num_rows):
-            sys.stdout.write("%6f" % matrix[i,j])
-            if j != num_rows:
-                sys.stdout.write(", ")
-        print
-
-def print_matrix_to_file(matrix, filename):
-    # Take NumPy 2D array and print it to file for external verification/plotting
-
-    if os.path.isfile(filename):
-        response = str(raw_input("Warning, chosen output file already exists. Overwrite? "))
-        if response.lower() == "yes":
-            print "Continuing..."
-        elif response.lower() == "no":
-            print "Aborting... "
-            exit(2)
-        else:
-            print "Unrecognised response. Aborting..."
-            exit(3)
-
-    output_file = open(filename, 'w')
-
-    num_cols = matrix.shape[0]
-    num_rows = matrix.shape[1]
-
-    try:
-        for i in range(num_cols):
-            for j in range(num_rows):
-                output_file.write("%6f\t" % matrix[i,j])
-            output_file.write("\n")
-
-    finally:
-        output_file.close()
-    # Ensure file is properly closed, even if writing to file fails
-
-def input_matrix(filename):
-    # Return array contained in filename
-
-    input_file = open(filename,"r")
-
-    num_cols = len(input_file.readline().split())
-    input_file.seek(0)
-
-    num_rows = sum(1 for line in input_file)
-    input_file.seek(0)
-
-    matrix = np.array([[None for i in range(num_cols)] 
-                             for i in range(num_rows)])
-    line_num = 0
-
-    while True:
-        line = input_file.readline()
-        if not line: break
-        matrix[line_num,:] = line.split()
-        line_num += 1
-
-    input_file.close()
-
-    return matrix, num_cols, num_rows
 
 def solve(num_x, num_y, err_tol = 1e-2, max_it = 1e5, input_matrix=None, boundary_cond=None):
 
