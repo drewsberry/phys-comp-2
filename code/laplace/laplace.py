@@ -9,6 +9,10 @@ import laplace_io as lpio
 
 parser = argparse.ArgumentParser(description='Solving Laplace equation in two dimensions.')
 
+parser.add_argument('method', choices = ["jacobi", "gauss-seidel"], help='''
+					iterative method to use. Both Jacobi and Gauss-Seidel methods are
+					supported.''')
+
 parser.add_argument('-i','--input',
 					help='take boundary conditions from matrix input file')
 
@@ -48,7 +52,7 @@ if args.input:
 	print "done"
 
 print "Iteratively solving Laplace's equation... "
-solution = lps.solve(args.xnum, args.ynum, err_tol=args.error, 
+solution = lps.solve(args.xnum, args.ynum, args.method, err_tol=args.error,
 					 input_matrix=matrix, boundary_cond = args.boundary)
 print "... done"
 
