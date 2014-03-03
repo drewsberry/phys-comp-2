@@ -112,7 +112,7 @@ def gauss_seidel(grid, num_x, num_y):
     return grid
     # CHECK TO MAKE SURE THIS IS THE CORRECT WAY TO DO THE GAUSS-SEIDEL METHOD, IT PROBABLY ISN'T
 
-def solve(num_x, method, num_y, err_tol = 1e-2, max_it = 1e5, input_matrix=None, boundary_cond=None):
+def solve(num_x, num_y, method, err_tol = 1e-2, max_it = 1e5, input_matrix=None, boundary_cond=None):
 
     grid = np.random.rand(num_x,num_y)
     grid_new = np.zeros((num_x,num_y))
