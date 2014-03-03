@@ -51,7 +51,7 @@ if args.input:
 	matrix, args.xnum, args.ynum = lpio.input_matrix(args.input)
 	print "done"
 
-print "Iteratively solving Laplace's equation... "
+print "Iteratively solving Laplace's equation using {0} method... ".format(args.method.title())
 solution = lps.solve(args.xnum, args.ynum, args.method, err_tol=args.error,
 					 input_matrix=matrix, boundary_cond = args.boundary)
 print "... done"
