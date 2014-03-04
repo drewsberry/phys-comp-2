@@ -26,7 +26,7 @@ def impose_boundary(grid, num_x, num_y, input_boundaries=None, conditions=None):
 
     if conditions == "net":
         grid[0,:] = 1
-        grid[num_x-1,:]  =1
+        grid[num_x-1,:] = 1
         grid[:,0] = 1
         grid[:,num_y-1] = 1
 
