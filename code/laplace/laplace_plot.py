@@ -21,15 +21,19 @@ def plot_surf(num_x, num_y, spacing, grid):
 
     fig = plt.figure()
 
+    print "\nPlotting solution to surf plot... ",
     surf_axes = fig.gca(projection='3d')
     surf_plot = surf_axes.plot_surface(X, Y, grid.transpose(), rstride=1, cstride=1,
         cmap=cm.hot, linewidth=0, antialiased=True)
+    print "done"
 
     surf_axes.set_xlabel("$x$")
     surf_axes.set_ylabel("$y$")
     surf_axes.set_title("$\\varphi(x,y)$")
 
+    print "Saving surf plot to file 'surf.eps'... ",
     plt.savefig("surf.eps")
+    print "done"
 
 def plot_contour(num_x, num_y, spacing, grid):
     # Use matplotlib to plot contours of potential field.
@@ -40,15 +44,19 @@ def plot_contour(num_x, num_y, spacing, grid):
 
     fig = plt.figure()
 
+    print "\nPlotting solution to contour plot... ",
     cont_plot = plt.contourf(X, Y, grid.transpose(), 100, rstride=1, cstride=1, 
         cmap=cm.hot, linewidth=0)
     plt.colorbar()
+    print "done"
 
     plt.xlabel("$x$")
     plt.ylabel("$y$")
     plt.title("$\\varphi(x,y)$")
 
+    print "Saving contour plot to file 'contour.eps'... ",
     plt.savefig("contour.eps")
+    print "done"
 
 def plot_vector(num_x, num_y, spacing, grid):
     # Plot the vector gradient of potential field using arrows.
@@ -56,7 +64,9 @@ def plot_vector(num_x, num_y, spacing, grid):
     Y, X = np.mgrid[0:num_x*spacing:complex(0,num_x),
                     0:num_y*spacing:complex(0,num_y)]
 
+    print "\nFinding gradient of solution... ",
     vector_u, vector_v = np.gradient(grid.transpose())
+    print "done"
 
     vector_u = np.zeros((num_x, num_y)) - vector_u
     vector_v = np.zeros((num_x, num_y)) - vector_v
@@ -66,12 +76,17 @@ def plot_vector(num_x, num_y, spacing, grid):
     fig = plt.figure()
 
     lw = 5*magnitude/magnitude.max()
+
+    print "Plotting gradient of solution to vector plot... ",
     stream_plot = plt.streamplot(X, Y, vector_v, vector_u, color=magnitude, 
                                  linewidth=lw, cmap=cm.hot)
     plt.colorbar()
+    print "done"
 
     plt.xlabel("$x$")
     plt.ylabel("$y$")
     plt.title("$\mathbf{E}(x,y)$")
 
+    print "Saving vector plot to file 'vector.eps'... ",
     plt.savefig("vector.eps")
+    print "done"

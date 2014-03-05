@@ -90,7 +90,8 @@ def iterate_node(grid, i, j, num_x, num_y):
     return (above + below + left + right) / 4
     
 def jacobi(grid, num_x, num_y):
-    # Apply iterate_node() to grid, using the Jacobi iteration method, requiring two grids. Return the new grid obtained by iterating over each node.
+    # Apply iterate_node() to grid, using the Jacobi iteration method.
+    # New grid values saved into separate grid
     
     grid_new = np.zeros((num_x, num_y))
     
@@ -102,15 +103,18 @@ def jacobi(grid, num_x, num_y):
     return grid_new
     
 def gauss_seidel(grid, num_x, num_y):
-    # Apply iterate_node() to grid, using the Gauss-Seidel iteration method, requiring only one grid. Return the grid obtained by iterating over the whole matrix.
+    # Apply iterate_node() to grid, using the Gauss-Seidel iteration method.
+    # New grid values saved into original grid. Converges much faster than 
+    # Jacobi method.
+
+    grid_new = np.copy(grid)
     
     for i in range(0,num_x):
         for j in range(0,num_y):
             
-            grid[i,j] = iterate_node(grid, i, j, num_x, num_y)
+            grid_new[i,j] = iterate_node(grid_new, i, j, num_x, num_y)
             
-    return grid
-    # CHECK TO MAKE SURE THIS IS THE CORRECT WAY TO DO THE GAUSS-SEIDEL METHOD, IT PROBABLY ISN'T
+    return grid_new
 
 def solve(num_x, num_y, method, err_tol = 1e-2, max_it = 1e5, input_matrix=None, boundary_cond=None):
 
@@ -126,17 +130,12 @@ def solve(num_x, num_y, method, err_tol = 1e-2, max_it = 1e5, input_matrix=None,
     # Iteration procedure
     num_iters = 1
     while num_iters <= max_it:
-        #for i in range(0,num_x):
-        #    for j in range(0,num_y):
-
-        #        grid_new[i,j] = iterate_node(grid, i, j, num_x, num_y)
-        #        diff[i,j] = np.abs(grid_new[i,j] - grid[i,j])
 
         if method == "jacobi":
             grid_new = jacobi(grid, num_x, num_y)
         
-        if method == "gauss":
-            grid_new = gauss_seidel(grid, num_x, num_y) # I don't think this is how Gauss-Seidel methods works
+        if method == "gauss-seidel":
+            grid_new = gauss_seidel(grid, num_x, num_y)
         
         diff = np.abs(grid_new - grid)
         

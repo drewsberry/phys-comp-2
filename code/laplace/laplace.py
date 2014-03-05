@@ -51,14 +51,12 @@ if args.input:
     matrix, args.xnum, args.ynum = lpio.input_matrix(args.input)
     print "done"
 
-print "Iteratively solving Laplace's equation using {0} method... ".format(args.method.title())
+print "Iteratively solving Laplace's equation using {0} method...\n".format(args.method.title())
 solution = lps.solve(args.xnum, args.ynum, args.method, err_tol=args.error,
                      input_matrix=matrix, boundary_cond = args.boundary)
-print "... done"
+print "\n... done"
 
 if args.plot:
-    print "Plotting solution to encapsulated postscript as {0}, {1} and {2} "\
-          "plots...".format(args.plot[0], args.plot[1], args.plot[2]),
     for i in range(len(args.plot)):
         if args.plot[i] == "surf":
             lpp.plot_surf(args.xnum, args.ynum, spacing, solution)
@@ -66,14 +64,13 @@ if args.plot:
             lpp.plot_contour(args.xnum, args.ynum, spacing, solution)
         if args.plot[i] == "vector":
             lpp.plot_vector(args.xnum, args.ynum, spacing, solution)
-    print "done"
 
 if args.output:
-    print "Printing solution to file... ",
+    print "\nPrinting solution to file... ",
     lpio.print_matrix_to_file(solution, args.output)
     print "done"
 
 if args.printout:
-    print "Printing solution to stdout... "
+    print "\nPrinting solution to stdout... "
     lpio.print_matrix(solution)
     print "... done"
