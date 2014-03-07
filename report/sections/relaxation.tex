@@ -1,0 +1,45 @@
+\section{Relaxation Methods}
+\label{sec:relaxation_methods}
+
+A common method of solving partial differential equations, both linear and nonlinear, is by iterative relaxation methods. Here this means taking advantage of the finite difference discretisation of the differential equation. The essential method has six steps:
+\begin{description}
+    \item[Step 1:] Define a regular spatial grid covering the region of interest including nodes at the boundaries.
+    \item[Step 2:] Set the boundary conditions of the problem by fixing the boundary nodes to the boundary values.
+    \item[Step 3:] Guess an initial state for the interior of the grid.
+    \item[Step 4:] Calculate the finite difference equations.
+    \item[Step 5:] Choose a convergence criterion.
+    \item[Step 6:] Iterate the equations at each boundary node until the convergence condition is satisfied.
+\end{description}
+
+As applied to the Poisson equation
+\begin{equation}
+    \nabla^2 \varphi = -\rho,
+    \label{eqn:poisson}
+\end{equation}
+this means that, given $\varphi$ is a smooth function $\varphi: \mathbb{R} \rightarrow \mathbb{R}$ and thus has Taylor expansion about point $x_i$ of
+\begin{align*}
+    \varphi(x) =&~\varphi(x_i) + (x-x_i)d_x\varphi(x_i) \\
+                & + \frac{(x-x_i)^2}{2}d_x^2\varphi(x_i) + \mathcal{O}((x-x_i)^3),
+\end{align*}
+the second derivative can be approximated by
+\begin{equation}
+    d_x^2\varphi(x) = \frac{\varphi(x-h)+\varphi(x+h)-2\varphi(x)}{h^2} + \mathcal{O}(h^2)
+    \label{eqn:finite_difference}
+\end{equation}
+where $h$ is the grid spacing.
+
+Equation \ref{eqn:finite_difference} gives the finite difference for the second differential.
+
+Generalising this to two dimensions and applying to Equation \ref{eqn:poisson} gives the following iterative formula at each node:
+\begin{align}
+    \varphi(x_i,y_i) = \frac{1}{4}\bigg[&\varphi(x_{i-1},y_j)+\varphi(x_{i+1},y_j)+ \notag \\
+        & \varphi(x_i,y_{i-1})+\varphi(x_i,y_{i+1})+ \\
+        & \rho(x_i,y_j)h^2\bigg] \notag
+    \label{eqn:iteration}
+\end{align}
+where $x_i,y_j$ are points on the grid. If $\rho = 0$, i.e. there are no sources and Poisson's equation becomes Laplace's equation, then this iteration simply becomes the average value of the nearest neighbour points on the grid.
+
+There are two methods of solving this equation.
+
+\subsection{Jacobi Method}
+

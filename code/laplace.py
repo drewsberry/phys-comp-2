@@ -4,8 +4,8 @@ import argparse
 
 # Custom libraries
 import laplace_solve as lps
-import laplace_plot as lpp
-import laplace_io as lpio
+import plotting
+import matrix_io as mio
 
 parser = argparse.ArgumentParser(description="Solving Laplace equation in two dimensions.")
 
@@ -52,25 +52,25 @@ if args.input:
     print "done"
 
 print "Iteratively solving Laplace's equation using {0} method...\n".format(args.method.title())
-solution = lps.solve(args.xnum, args.ynum, args.method, err_tol=args.error,
-                     input_matrix=matrix, boundary_cond = args.boundary)
+solution = lps.solve_laplace(args.xnum, args.ynum, args.method, err_tol=args.error,
+                             input_matrix=matrix, boundary_cond = args.boundary)
 print "\n... done"
 
 if args.plot:
     for i in range(len(args.plot)):
         if args.plot[i] == "surf":
-            lpp.plot_surf(args.xnum, args.ynum, spacing, solution)
+            plotting.plot_surf(args.xnum, args.ynum, spacing, solution)
         if args.plot[i] == "contour":
-            lpp.plot_contour(args.xnum, args.ynum, spacing, solution)
+            plotting.plot_contour(args.xnum, args.ynum, spacing, solution)
         if args.plot[i] == "vector":
-            lpp.plot_vector(args.xnum, args.ynum, spacing, solution)
+            plotting.plot_vector(args.xnum, args.ynum, spacing, solution)
 
 if args.output:
     print "\nPrinting solution to file... ",
-    lpio.print_matrix_to_file(solution, args.output)
+    mio.print_matrix_to_file(solution, args.output)
     print "done"
 
 if args.printout:
     print "\nPrinting solution to stdout... "
-    lpio.print_matrix(solution)
+    mio.print_matrix(solution)
     print "... done"

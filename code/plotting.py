@@ -6,13 +6,16 @@ try:
     import matplotlib.pyplot as plt
 
     from matplotlib import cm
+    from matplotlib import rc
     from mpl_toolkits.mplot3d import Axes3D
 except ImportError as e:
     print "Error importing matplotlib library. You will not be able to use the "\
           "'-p' or '--plot' option."
     print "Error message: {}".format(e)
 
-def plot_surf(num_x, num_y, spacing, grid):
+rc("text", usetex=True)
+
+def plot_surf(num_x, num_y, spacing, grid, filename="surf"):
     # Use matplotlib.pyplot to create 3D surf plot of potential field.
 
     x = np.linspace(0, num_x*spacing, num_x)
@@ -31,18 +34,20 @@ def plot_surf(num_x, num_y, spacing, grid):
     surf_axes.set_ylabel("$y$")
     surf_axes.set_title("$\\varphi(x,y)$")
 
-    print "Saving surf plot to file 'surf.eps'... ",
-    plt.savefig("surf.eps")
+    full_fname = "plots/" + filename
+    print "Saving surf plot to file '{}'... ".format(full_fname),
+    plt.savefig(full_fname)
     print "done"
 
-def plot_contour(num_x, num_y, spacing, grid):
+def plot_contour(num_x, num_y, spacing, grid, filename="contour.eps"):
     # Use matplotlib to plot contours of potential field.
 
     x = np.linspace(0, num_x*spacing, num_x)
     y = np.linspace(0, num_y*spacing, num_y)  
     X, Y = np.meshgrid(x,y)
 
-    fig = plt.figure()
+    # fig = plt.figure()
+    fig = plt.figure(figsize=(5,52))
 
     print "\nPlotting solution to contour plot... ",
     cont_plot = plt.contourf(X, Y, grid.transpose(), 100, rstride=1, cstride=1, 
@@ -54,11 +59,12 @@ def plot_contour(num_x, num_y, spacing, grid):
     plt.ylabel("$y$")
     plt.title("$\\varphi(x,y)$")
 
-    print "Saving contour plot to file 'contour.eps'... ",
-    plt.savefig("contour.eps")
+    full_fname = "plots/" + filename
+    print "Saving contour plot to file '{}'... ".format(full_fname),
+    plt.savefig(full_fname)
     print "done"
 
-def plot_vector(num_x, num_y, spacing, grid):
+def plot_vector(num_x, num_y, spacing, grid, filename="vector.eps"):
     # Plot the vector gradient of potential field using arrows.
 
     Y, X = np.mgrid[0:num_x*spacing:complex(0,num_x),
@@ -87,6 +93,7 @@ def plot_vector(num_x, num_y, spacing, grid):
     plt.ylabel("$y$")
     plt.title("$\mathbf{E}(x,y)$")
 
-    print "Saving vector plot to file 'vector.eps'... ",
-    plt.savefig("vector.eps")
+    full_fname = "plots/" + filename
+    print "Saving vector plot to file '{}'... ".format(full_fname),
+    plt.savefig(full_fname)
     print "done"

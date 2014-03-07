@@ -46,9 +46,9 @@ def print_matrix_to_file(matrix, filename):
 
     if os.path.isfile(filename):
         response = str(raw_input("Warning, chosen output file already exists. Overwrite? "))
-        if response.lower() == "yes":
+        if response.lower() == "yes" or response.lower() == "y":
             print "Continuing..."
-        elif response.lower() == "no":
+        elif response.lower() == "no" or response.lower() == "n":
             print "Aborting... "
             exit(2)
         else:

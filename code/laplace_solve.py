@@ -9,8 +9,9 @@ def impose_boundary(grid, num_x, num_y, input_boundaries=None, conditions=None):
     # return number of boundary nodes.
 
     if conditions == "capacitor":
-        grid[num_x/4,:] = 1
-        grid[3*num_x/4,:] = -1
+        width = num_y / 2
+        grid[num_x/4,num_y/2 - width/2:num_y/2 + width/2] = 1
+        grid[3*num_x/4,num_y/2 - width/2:num_y/2 + width/2] = -1
 
         return 2*num_y
 
@@ -116,7 +117,7 @@ def gauss_seidel(grid, num_x, num_y):
             
     return grid_new
 
-def solve(num_x, num_y, method, err_tol = 1e-2, max_it = 1e5, input_matrix=None, boundary_cond=None):
+def solve_laplace(num_x, num_y, method, err_tol = 1e-2, max_it = 1e5, input_matrix=None, boundary_cond=None):
 
     grid = np.random.rand(num_x,num_y)
     grid_new = np.zeros((num_x,num_y))

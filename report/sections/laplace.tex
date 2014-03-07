@@ -1,0 +1,8 @@
+\section{Solving Laplace's Equation in Two Dimensions}
+\label{sec:laplace}
+
+Here Laplace's equation in two dimensions,
+\begin{equation}
+    \nabla^2 \varphi = 0,
+\end{equation}
+is solved using the finite difference equation given in Equation \ref{eqn:iteration} with $\rho = 0$. The Jacobi method is used to iterate the grid. The chosen convergence condition is that the maximum change in any node is less than an absolute error tolerance, called $\epsilon$. By default $\epsilon$ is set to $10^{-5}$, but choosing a different scale for the charge density requires altering this to be appropriate, e.g. if the charges involved are $\mathcal{O}(10^{-6})$, the absolute error tolerance should be $\sim 10^{-11}$.\todo{I might change this.} All non-boundary nodes were set to random guesses between 0 and 1. The number of iterations was capped at \texttt{max\_it}$=10000$.
