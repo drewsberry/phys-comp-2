@@ -8,8 +8,8 @@ import sys
 # Custom libraries
 import animation
 
-num_x = 100
-num_y = 100
+num_x = 200
+num_y = 200
 h = 1/16
 
 num_nodes = num_x*num_y
@@ -24,13 +24,13 @@ fig = plt.figure()
 fig.suptitle("$\\varphi(x,y)$")
 
 num_frames = 200
-for frame in range(num_frames):
+for width in range(num_frames):
     sys.stdout.flush()
     sys.stdout.write("\r\t\t\t\t\t\t\t\t\t\tFrames completed: %5d / %5d" % 
-                     (frame+1, num_frames))
+                     (width+1, num_frames))
 
     animation.laplace_anim_cont(num_x, num_y, "gauss-seidel", ims, fig, X, Y, 
-                                frame=frame, boundary_cond="capacitor")
+                                frame=width, boundary_cond="capacitor")
 
 print "Iterations finished. Creating animation."
 capacitor_anim = anim.ArtistAnimation(fig, ims, interval=100, blit=False)

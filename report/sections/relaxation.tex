@@ -33,9 +33,8 @@ Equation \ref{eqn:finite_difference} gives the finite difference for the second 
 Generalising this to two dimensions and applying to Equation \ref{eqn:poisson} gives the following iterative formula at each node:
 \begin{align}
     \varphi(x_i,y_i) = \frac{1}{4}\bigg[&\varphi(x_{i-1},y_j)+\varphi(x_{i+1},y_j)+ \notag \\
-        & \varphi(x_i,y_{i-1})+\varphi(x_i,y_{i+1})+ \\
+        & \varphi(x_i,y_{i-1})+\varphi(x_i,y_{i+1})+ \label{eqn:iteration} \\
         & \rho(x_i,y_j)h^2\bigg] \notag
-    \label{eqn:iteration}
 \end{align}
 where $x_i,y_j$ are points on the grid. If $\rho = 0$, i.e. there are no sources and Poisson's equation becomes Laplace's equation, then this iteration simply becomes the average value of the nearest neighbour points on the grid.
 
@@ -43,3 +42,8 @@ There are two methods of solving this equation.
 
 \subsection{Jacobi Method}
 
+There are at any time two distinct grids of nodes. When the finite difference equation is used to iterate a node, producing the new value, this value is stored in the new grid so that all iterations are acted upon by the old grid and produce values which go into the new grid. This means that all iterations are based entirely on the values from the original grid.
+
+\subsection{Gauss-Seidel Method}
+
+Another possible iteration method is known as the Gauss-Seidel method. In this method, the value produced by iterating at a node using the same finite difference equation is stored in the original grid. This means that all iterations are based partly on values from the original grid and partly on new values obtained from already completed iterations. Thus the Gauss-Seidel would be expected to converge to the final solution faster than the Jacobi method, as is shown in Section \ref{sec:laplace}.

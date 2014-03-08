@@ -1,17 +1,15 @@
 # Library imports
 from __future__ import division
 import argparse
+import matplotlib.pyplot as plt
 import numpy as np
+from numpy import linalg as la
+
+from matplotlib import cm
 
 # Custom libraries
 import diffusion_evolve as dfe
 import plotting
-import matplotlib.pyplot as plt
-import matplotlib.animation as anim
-import types
-import sys
-
-from matplotlib import cm
 
 xnum = 52
 width = 5
@@ -19,7 +17,11 @@ spacing = 0.1
 alpha = 23e-6
 delta_t = 10.0
 h = 0.01
-rod = np.zeros((xnum, width))
+tolerance = 1e-20
+num_env_nodes = width*2
+
+rod = np.zeros((width, xnum))
+rod.fill(293.15)
 
 prefactor = np.zeros((xnum, xnum))
 for i in range(xnum):
@@ -28,47 +30,16 @@ for i in range(xnum):
             prefactor[i,j] = 1 + 2*alpha*delta_t / h**2
         if i == j-1 or i == j+1:
             prefactor[i,j] = - alpha*delta_t / h**2
+prefactor[0,0] = 1 + alpha*delta_t / h**2
+prefactor[xnum-1,xnum-1] = 1 + alpha*delta_t / h**2
+# The bottom and top boundary nodes only average over one neighbour at same
+# point on length
 
-ims = []
+pref_inv = la.inv(prefactor)
 
-x = np.linspace(0, xnum*h, xnum)
-y = np.linspace(0, width*h, width)    
-X, Y = np.meshgrid(x,y)
+equilib_solution, num_iters = dfe.evolve_till_equilib(rod, xnum, width, pref_inv, tolerance, num_env_nodes)
 
-fig = plt.figure(figsize=(10,3))
-fig.suptitle("$\\phi(x,t)$")
+plotting.plot_contour(xnum, width, spacing, equilib_solution.transpose(), filename="equilibrium.eps")
+plotting.plot_surf(xnum, width, spacing, equilib_solution.transpose(), filename="equilibrium_surf.eps")
 
-num_frames = 400
-for frame in range(num_frames):
-    rod = dfe.evolve(rod, xnum, prefactor)
-
-    plt.xlabel("$x$")
-    plt.ylabel("$y$")
-
-    rod_plot = plt.contourf(X, Y, rod.transpose(), 100, rstride=1, cstride=1,
-        cmap=cm.hot)
-
-    # Duck punch from matplotlib mailing list
-    def setvisible(self,vis):
-        for c in self.collections: c.set_visible(vis) 
-    rod_plot.set_visible = types.MethodType(setvisible,rod_plot,None) 
-    rod_plot.axes = plt.gca() 
-    rod_plot.figure = fig
-
-    ims.append([rod_plot])
-
-    sys.stdout.flush()
-    sys.stdout.write("\rNumber of frames completed: %5d / %5d;" %
-                     (frame+1, num_frames))
-
-    # plotting.plot_contour(width, xnum+1, spacing, rod.transpose(),
-    #                       filename="diff_cont_" + str(k))
-
-print "Producing animation."
-rod_anim = anim.ArtistAnimation(fig, ims, interval=100, blit=False)
-plt.colorbar()
-print "Completed."
-
-print "Saving as file."
-rod_anim.save("multimedia/rod_anim.mp4")
-print "Completed."
+print equilib_solution

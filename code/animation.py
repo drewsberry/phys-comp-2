@@ -12,7 +12,7 @@ from mpl_toolkits.mplot3d import Axes3D # 3D plotting library
 import laplace_solve as lps
 
 def laplace_anim_cont(num_x, num_y, method, ims, fig, X, Y, err_tol = 1e-2,
-    max_it = 1e5, input_matrix=None, frame=0, boundary_cond=None):
+    max_it = 1e5, input_matrix=None, frame=None, boundary_cond=None):
 
     grid = np.random.rand(num_x,num_y)
     grid_new = np.zeros((num_x,num_y))
@@ -22,7 +22,7 @@ def laplace_anim_cont(num_x, num_y, method, ims, fig, X, Y, err_tol = 1e-2,
     plt.xlabel("$x$")
     plt.ylabel("$y$")
 
-    num_boundary_nodes = lps.impose_boundary(grid, num_x, num_y, 
+    num_boundary_nodes = lps.impose_boundary(grid, num_x, num_y, width=frame,
                                              conditions=boundary_cond,
                                              input_boundaries=input_matrix)
 
@@ -60,8 +60,9 @@ def laplace_anim_cont(num_x, num_y, method, ims, fig, X, Y, err_tol = 1e-2,
         grid = np.copy(grid_new)
 
         # Boundary conditions must remain set for all iterations
-        lps.impose_boundary(grid, num_x, num_y, conditions=boundary_cond,
-                        input_boundaries=input_matrix)
+        lps.impose_boundary(grid, num_x, num_y, width=frame,
+                            conditions=boundary_cond,
+                            input_boundaries=input_matrix)
 
     print "Convergence condition not satisfied after {num_iters} iterations. "\
           "Try changing the number of nodes and/or grid spacing.".format(

@@ -4,12 +4,14 @@ from __future__ import division # Division always returns float
 import numpy as np
 import sys
 
-def impose_boundary(grid, num_x, num_y, input_boundaries=None, conditions=None):
+def impose_boundary(grid, num_x, num_y, width=None, input_boundaries=None, conditions=None):
     # Set the specified boundary conditions, with known in-built conditions and
     # return number of boundary nodes.
 
     if conditions == "capacitor":
-        width = num_y / 2
+        if width == None:
+            width = num_y/2
+
         grid[num_x/4,num_y/2 - width/2:num_y/2 + width/2] = 1
         grid[3*num_x/4,num_y/2 - width/2:num_y/2 + width/2] = -1
 
@@ -31,12 +33,11 @@ def impose_boundary(grid, num_x, num_y, input_boundaries=None, conditions=None):
         grid[:,0] = 1
         grid[:,num_y-1] = 1
 
-        return 2*num_x + 2*num_y
+        return 2*num_x + 2*num_y - 2
 
     if conditions == "cross":
         grid[num_x/2,:] = 1
         grid[:,num_y/2] = 1
-        # print_matrix(grid)
 
         return num_x + num_y - 1
 
@@ -113,7 +114,7 @@ def gauss_seidel(grid, num_x, num_y):
     for i in range(0,num_x):
         for j in range(0,num_y):
             
-            grid_new[i,j] = iterate_node(grid_new, i, j, num_x, num_y)
+            grid_new[i,j] = iterate_node(grid, i, j, num_x, num_y)
             
     return grid_new
 

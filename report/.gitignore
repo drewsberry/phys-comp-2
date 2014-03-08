@@ -11,3 +11,6 @@
 *-blx.bib
 *.blg
 *.run.xml
+
+# Intermediary graph files
+*-eps-converted-to.pdf

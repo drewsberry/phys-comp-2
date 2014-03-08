@@ -24,7 +24,7 @@ parser.add_argument("-b","--boundary",
                                "cross"],
                     help="use in-built boundary conditions.")
 
-parser.add_argument("-e", "--error", type=float, default=1e-2,
+parser.add_argument("-e", "--error", type=float, default=1e-4,
                     help="change the absolute error tolerance for convergence.")
 
 parser.add_argument("-x", "--xnum", type=int, default=50, help="""

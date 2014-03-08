@@ -28,43 +28,49 @@ def plot_surf(num_x, num_y, spacing, grid, filename="surf"):
     surf_axes = fig.gca(projection='3d')
     surf_plot = surf_axes.plot_surface(X, Y, grid.transpose(), rstride=1, cstride=1,
         cmap=cm.hot, linewidth=0, antialiased=True)
+    surf_plot = surf_axes.plot_surface(X, Y, grid.transpose(), rstride=1, cstride=1,
+        cmap=cm.hot, linewidth=0, antialiased=True)
     print "done"
 
     surf_axes.set_xlabel("$x$")
     surf_axes.set_ylabel("$y$")
     surf_axes.set_title("$\\varphi(x,y)$")
 
-    full_fname = "plots/" + filename
+    full_fname = "plots/" + filename + ".eps"
     print "Saving surf plot to file '{}'... ".format(full_fname),
-    plt.savefig(full_fname)
+    plt.savefig(full_fname, bbox_inches="tight")
     print "done"
 
-def plot_contour(num_x, num_y, spacing, grid, filename="contour.eps"):
+def plot_contour(num_x, num_y, spacing, grid, filename="contour"):
     # Use matplotlib to plot contours of potential field.
 
     x = np.linspace(0, num_x*spacing, num_x)
     y = np.linspace(0, num_y*spacing, num_y)  
     X, Y = np.meshgrid(x,y)
 
-    # fig = plt.figure()
-    fig = plt.figure(figsize=(5,52))
+    fig = plt.figure()
+    # fig = plt.figure(figsize=(num_x,num_y))
 
     print "\nPlotting solution to contour plot... ",
-    cont_plot = plt.contourf(X, Y, grid.transpose(), 100, rstride=1, cstride=1, 
-        cmap=cm.hot, linewidth=0)
-    plt.colorbar()
+    cont_plot = plt.contourf(X, Y, grid.transpose(), 100, rstride=1, cstride=1,
+                             cmap=cm.hot, linewidth=0)
+    cont_plot = plt.contourf(X, Y, grid.transpose(), 100, rstride=1, cstride=1,
+                             cmap=cm.hot, linewidth=0)
+    cbar = plt.colorbar()
+    cbar.solids.set_edgecolor("face")
+    plt.draw()
     print "done"
 
     plt.xlabel("$x$")
     plt.ylabel("$y$")
     plt.title("$\\varphi(x,y)$")
 
-    full_fname = "plots/" + filename
+    full_fname = "plots/" + filename + ".eps"
     print "Saving contour plot to file '{}'... ".format(full_fname),
-    plt.savefig(full_fname)
+    plt.savefig(full_fname, bbox_inches="tight")
     print "done"
 
-def plot_vector(num_x, num_y, spacing, grid, filename="vector.eps"):
+def plot_vector(num_x, num_y, spacing, grid, filename="vector"):
     # Plot the vector gradient of potential field using arrows.
 
     Y, X = np.mgrid[0:num_x*spacing:complex(0,num_x),
@@ -86,14 +92,18 @@ def plot_vector(num_x, num_y, spacing, grid, filename="vector.eps"):
     print "Plotting gradient of solution to vector plot... ",
     stream_plot = plt.streamplot(X, Y, vector_v, vector_u, color=magnitude, 
                                  linewidth=lw, cmap=cm.hot)
-    plt.colorbar()
+    stream_plot = plt.streamplot(X, Y, vector_v, vector_u, color=magnitude, 
+                                 linewidth=lw, cmap=cm.hot)
+    cbar = plt.colorbar()
+    cbar.solids.set_edgecolor("face")
+    plt.draw()
     print "done"
 
     plt.xlabel("$x$")
     plt.ylabel("$y$")
     plt.title("$\mathbf{E}(x,y)$")
 
-    full_fname = "plots/" + filename
+    full_fname = "plots/" + filename + ".eps"
     print "Saving vector plot to file '{}'... ".format(full_fname),
-    plt.savefig(full_fname)
+    plt.savefig(full_fname, bbox_inches="tight")
     print "done"
