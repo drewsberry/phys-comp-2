@@ -24,7 +24,7 @@ parser.add_argument("-s", "--timestep", type=float, default=0.1,
 parser.add_argument("-t", "--time", type=float, default=100,
                     help="specify length of time in seconds to simulate.")
 
-parser.add_argument("-e", "--error", type=float, default=1e-10,
+parser.add_argument("-e", "--error", type=float, default=1e-5,
                     help="specify absolute error tolerance in kelvin for equilibrium check.")
 
 parser.add_argument("-c", "--cold", action="store_true",
