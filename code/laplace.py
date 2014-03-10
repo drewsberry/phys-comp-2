@@ -1,5 +1,6 @@
 # Library imports
 from __future__ import division # Division always returns float
+
 import argparse
 import time
 

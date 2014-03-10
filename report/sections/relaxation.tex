@@ -19,30 +19,37 @@ where $x_i,y_j$ are points on the grid and $\rho = 0$, i.e. there are no sources
 There are two methods of solving this equation.
 
 \subsubsection{Jacobi Method}
+\label{subsubsec:jacobi}
 
 There are at any time two distinct grids of nodes. When the finite difference equation is used to iterate a node, producing the new value, this value is stored in the new grid so that all iterations are acted upon by the old grid and produce values which go into the new grid. This means that all iterations are based entirely on the values from the original grid.
 
 \subsubsection{Gauss-Seidel Method}
+\label{subsubsec:gauss-seidel}
 
 Another possible iteration method is known as the Gauss-Seidel method. In this method, the value produced by iterating at a node using the same finite difference equation is stored in the original grid. This means that all iterations are based partly on values from the original grid and partly on new values obtained from already completed iterations.
 
 \subsection{Heat Diffusion Equation}
+\label{subsec:heat_diffusion_equation}
 
 The second main application of the finite difference method here is to solving the heat diffusion equation. There are two primary finite difference iteration methods for the solving the heat diffusion equation:
 
 \subsubsection{Explicit Forward Difference Method}
-The explicit forward difference (also known as the Forward Time, Centred Space method or FTCS method) uses the following iteration equation to go from time $t$ to time $t+\delta t$:
+\label{subsubsec:explicit}
+
+The explicit forward difference (also known as the Forward Time, Central Space method or FTCS method \cite{roache1972}) uses the following iteration equation to go from time $t$ to time $t+\delta t$:
 \begin{align}
     \frac{\phi(x_i,t+\delta t)}{\delta t} = \frac{\alpha}{h^2}\big[&\phi(x_{i-1},t) + \phi(x_{i+1},t) \notag \\
                                                                & - 2\phi(x_i,t)\big].\label{eqn:explicit}
 \end{align}
-This equation is unstable for $\frac{\alpha \delta t}{h^2} \leq \frac{1}{2}$ (where $\delta t$ is the time step and $h$ is the distance between nodes in the discretised rod). For the iron rod, $\alpha = \SI{23}{\milli\meter\per\second}$, so taking a reasonable grid spacing of $h = \SI{1}{\centi\metre}$ and time step of $\delta t = \SI{10}{\second}$ results in Equation \ref{eqn:explicit} becoming unstable and unusable. The second, generally more numerically intensive implicit finite difference method is therefore resorted to.
+This equation is unstable for $\frac{\alpha \delta t}{h^2} \leq \frac{1}{2}$ \cite{tannehill1997} (where $\delta t$ is the time step and $h$ is the distance between nodes in the discretised rod). For the iron rod, $\alpha = \SI{23}{\milli\meter\per\second}$, so taking a reasonable grid spacing of $h = \SI{1}{\centi\metre}$ and time step of $\delta t = \SI{10}{\second}$ results in Equation \ref{eqn:explicit} becoming unstable and unusable. The second, generally more numerically intensive implicit finite difference method is therefore resorted to.
 
 \subsubsection{Implicit Backward Difference Method}
-The implicit forward difference (also known as the Backward Time, Centred Space method or BTCS method) uses the following subtly different iteration equation to go from time $t+\delta t$ to time $t$:
+\label{subsubsec:implicit}
+
+The implicit forward difference (also known as the Backward Time, Central Space method or BTCS method \cite{laney1998}) uses the following subtly different iteration equation to go from time $t+\delta t$ to time $t$:
 \begin{align}
     \frac{\phi(x_i,t+\delta t) - \phi(x_i,t)}{\delta t} = \frac{\alpha}{h^2}\big[&\phi(x_{i-1},t+\delta t) \notag \\
                                                                                  & + \phi(x_{i+1},t+\delta t) \label{eqn:implicit} \\
                                                                                  & - 2\phi(x_i,t+\delta t)\big]. \notag
 \end{align}
-This iteration method converges for all values of $\frac{\alpha \delta t}{h^2}$, and is thus used for the final part of this exercise. It does, however, require solving a linear set of equations, which can be arranged as a matrix equation and solved by inverting the matrix of prefactors, $\text{P}$, as in $\text{P}\bm{\phi}(t+\delta t) = \bm{\phi}(t) \implies \bm{\phi}(t+\delta t) = \bm{\phi}(t) \text{P}^{-1}$, where $\bm{\phi}(t)$ runs over all nodes in the discretised rod at time $t$.
+This iteration method converges for all values of $\frac{\alpha \delta t}{h^2}$ \cite{hoffman2001}, and is thus used for the final part of this exercise. Because the BTCS method converges for all $\frac{\alpha \delta t}{h^2}$, the time step can be set to anything with the iterations still stable. It does, however, require solving a linear set of equations, which can be arranged as a matrix equation and solved by inverting the matrix of prefactors, $\text{P}$, as in $\text{P}\bm{\phi}(t+\delta t) = \bm{\phi}(t) \implies \bm{\phi}(t+\delta t) = \bm{\phi}(t) \text{P}^{-1}$, where $\bm{\phi}(t)$ runs over all nodes in the discretised rod at time $t$.

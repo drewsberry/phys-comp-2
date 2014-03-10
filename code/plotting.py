@@ -12,13 +12,15 @@ except ImportError as e:
     print "Error importing matplotlib library. You will not be able to use the "\
           "'-p' or '--plot' option."
     print "Error message: {}\n".format(e)
+# This is so the program will still run without having the matplotlib plotting
+# libraries installed, just without the ability to plot.
 
 import matrix_io as mio
 
 rc("text", usetex=True)
 
 def plot_surface(num_x, num_y, spacing, grid, title="varphi", filename="surface"):
-    # Use matplotlib.pyplot to create 3D surf plot of potential field.
+    # Use matplotlib.pyplot to plot surface of potential field.
 
     x = np.linspace(0, num_x*spacing, num_x)
     y = np.linspace(0, num_y*spacing, num_y)  
@@ -32,6 +34,7 @@ def plot_surface(num_x, num_y, spacing, grid, title="varphi", filename="surface"
         cmap=cm.hot, linewidth=0, antialiased=True)
     surf_plot = surf_axes.plot_surface(X, Y, grid.transpose(), rstride=1, cstride=1,
         cmap=cm.hot, linewidth=0, antialiased=True)
+    # Plotting twice eradicates white line artefacts
     print "done"
 
     surf_axes.set_xlabel("$x$")
@@ -39,7 +42,8 @@ def plot_surface(num_x, num_y, spacing, grid, title="varphi", filename="surface"
     if title == "varphi":
         surf_axes.set_title("$\\varphi(x,y)$")
     else:
-        surf_axes.set_title("$\\"+title+"(x,y)")
+        surf_axes.set_title("$\\"+title+"(x,y)$")
+    # Allows for subtly different title for Laplace equation and heat diffusion.
 
     full_fname = "plots/" + filename + ".eps"
     print "Saving surf plot to file '{}'... ".format(full_fname),
@@ -53,17 +57,21 @@ def plot_contour(num_x, num_y, spacing, grid, title="varphi", filename="contour"
     y = np.linspace(0, num_y*spacing, num_y)  
     X, Y = np.meshgrid(x,y)
 
-    fig = plt.figure()
-    # fig = plt.figure(figsize=(num_x,num_y))
+    if title == "phi":
+        fig = plt.figure(figsize=(num_x/5,num_y/5))
+    else:
+        fig = plt.figure()
 
     print "\nPlotting solution to contour plot... ",
     cont_plot = plt.contourf(X, Y, grid.transpose(), 100, rstride=1, cstride=1,
                              cmap=cm.hot, linewidth=0)
-    # cont_plot = plt.contourf(X, Y, grid.transpose(), 100, rstride=1, cstride=1,
-    #                          cmap=cm.hot, linewidth=0)
+    cont_plot = plt.contourf(X, Y, grid.transpose(), 100, rstride=1, cstride=1,
+                             cmap=cm.hot, linewidth=0)
+    # Plotting twice eradicates white line artefacts
     cbar = plt.colorbar()
     cbar.solids.set_edgecolor("face")
     plt.draw()
+    # Eradicates white line artefacts in colorbar
     print "done"
 
     plt.xlabel("$x$")
@@ -71,7 +79,8 @@ def plot_contour(num_x, num_y, spacing, grid, title="varphi", filename="contour"
     if title == "varphi":
         plt.title("$\\varphi(x,y)$")
     else:
-        plt.title("$\\"+title+"(x,y)")
+        plt.title("$\\"+title+"(x,y)$")
+    # I want a subtly different title for Laplace equation and heat diffusion
 
     full_fname = "plots/" + filename + ".eps"
     print "Saving contour plot to file '{}'... ".format(full_fname),
@@ -115,7 +124,7 @@ def plot_vector(num_x, num_y, spacing, grid, title="varphi", filename="vector"):
     print "done"
 
 def plot_magnitude(num_x, num_y, spacing, grid, filename="magnitude"):
-    # Plot the vector gradient of potential field using arrows.
+    # Plot the magnitude of the electric field as a contour map
 
     Y, X = np.mgrid[0:num_x*spacing:complex(0,num_x),
                     0:num_y*spacing:complex(0,num_y)]
@@ -152,6 +161,7 @@ def plot_magnitude(num_x, num_y, spacing, grid, filename="magnitude"):
     print "done"
 
 def plot_normal(num_x, solution, filename="normal"):
+    # Normal 1d plot
 
     x = np.linspace(0, num_x, num_x)
 
