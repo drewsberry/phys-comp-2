@@ -1,2 +1,11 @@
 \section{Solving the Diffusion Equation for Iron Poker}
 \label{sec:diffusion_equation}
+
+In the final section of the exercise, the heat diffusion equation is solved for a metal rod. The heat diffusion equation is given by:
+\begin{equation}
+    \alpha \nabla^2 \phi = \frac{\partial \phi}{\partial t},
+\end{equation}
+where $\alpha = \frac{k}{\rho c_p}$ (with $k$ the the thermal conductivity, $\rho$ the density and $c_p$ the specific heat capacity) is the thermal diffusivity and $\phi$ is the temperature. Two boundary conditions are solved for: firstly, one end in a hot furnace of \SI{1000}{\celsius} only, and the other with one end in a hot furnace of \SI{1000}{\celsius} and the other in cold ice at \SI{0}{\celsius}. Heat loss through the edges of the rod are ignored throughout.
+
+\subsection{One end held in furnace of \SI{1000}{\celsius}}
+

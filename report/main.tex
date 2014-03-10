@@ -1,4 +1,4 @@
-\documentclass[report,aps,twocolumn]{revtex4}
+\documentclass[aps,twocolumn,nobalancelastpage]{revtex4}
 
 \input{preamble}
 
@@ -11,9 +11,36 @@
 
 \maketitle
 
+\input{sections/introduction}
 \input{sections/relaxation}
 \input{sections/laplace}
 \input{sections/capacitor}
 \input{sections/diffusion}
+
+\begin{thebibliography}{99}
+
+    \bibitem{edwards2004}
+        Ron Edwards, Bruce H. Falvo and David C. Larson,
+        \emph{Elementary Linear Algebra (5th edition)},
+        Chapter 10: Numerical Methods,
+        Page 578.
+        Houghton Mifflin Company,
+        2004.
+
+    \bibitem{golub1996}
+        Gene H. Golub and Charles F. Van Loan,
+        \emph{Matrix Computations (3rd edition)}.
+        Johns Hopkins University Press,
+        1996.
+
+    \bibitem{demmel1997}
+        James W. Demmel
+        \emph{Applied Numerical Linear Algebra},
+        Chapter 6: Iterative Methods for Linear Systems,
+        Page 290.
+        Society for Pure and Applied Mathematics,
+        1997.
+
+\end{thebibliography}
 
 \end{document}

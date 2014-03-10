@@ -10,20 +10,31 @@ def impose_boundary(grid, num_x, num_y, width=None, input_boundaries=None, condi
 
     if conditions == "capacitor":
         if width == None:
-            width = num_y/2
+            width = num_y//2
 
-        grid[num_x/4,num_y/2 - width/2:num_y/2 + width/2] = 1
-        grid[3*num_x/4,num_y/2 - width/2:num_y/2 + width/2] = -1
+        # Normal capacitor
+        grid[num_x//4,num_y//2 - width//2:num_y//2 + width//2] = 1
+        grid[3*num_x//4,num_y//2 - width//2:num_y//2 + width//2] = -1
 
-        return 2*num_y
+        ## Uncomment this for large capacitor
+        # width = num_y - 2
+        # grid[num_x//2-2,num_y//2 - width//2:num_y//2 + width//2] = 1
+        # grid[num_x//2+2,num_y//2 - width//2:num_y//2 + width//2] = -1
 
-    if conditions == "point_charge":
-        grid[num_x/2,num_y/2] = 1
+        ## Uncomment this for small capacitor
+        # width = num_x//20
+        # grid[num_x//10,num_y//2 - width//2:num_y//2 + width//2] = 1
+        # grid[9*num_x//10,num_y//2 - width//2:num_y//2 + width//2] = -1
+
+        return 2*width
+
+    if conditions == "point":
+        grid[num_x//2,num_y//2] = 1
 
         return 1
 
     if conditions == "plane":
-        grid[num_x/2,:] = 1
+        grid[num_x//2-1,:] = 1
 
         return num_y
 
@@ -36,8 +47,8 @@ def impose_boundary(grid, num_x, num_y, width=None, input_boundaries=None, condi
         return 2*num_x + 2*num_y - 2
 
     if conditions == "cross":
-        grid[num_x/2,:] = 1
-        grid[:,num_y/2] = 1
+        grid[num_x//2,:] = 1
+        grid[:,num_y//2] = 1
 
         return num_x + num_y - 1
 
@@ -91,6 +102,34 @@ def iterate_node(grid, i, j, num_x, num_y):
 
     return (above + below + left + right) / 4
     
+def iterate_node_no_ass(grid, i, j, num_x, num_y):
+    # Apply iteration technique for i,j element of matrix grid and save value
+    # into grid_new
+
+    num_neighbours = 4
+    if j < num_y-1:
+        above = grid[i,j+1]
+    else:
+        above = 0
+        num_neighbours -= 1
+    if j > 0:
+        below = grid[i,j-1]
+    else:
+        below = 0
+        num_neighbours -= 1
+    if i < num_x-1:
+        right = grid[i+1,j]
+    else:
+        right = 0
+        num_neighbours -= 1
+    if i > 0:
+        left = grid[i-1,j]
+    else:
+        left = 0
+        num_neighbours -= 1
+    new_node = (above + below + left + right) / num_neighbours
+    return new_node
+
 def jacobi(grid, num_x, num_y):
     # Apply iterate_node() to grid, using the Jacobi iteration method.
     # New grid values saved into separate grid
