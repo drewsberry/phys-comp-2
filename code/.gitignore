@@ -1,9 +1,0 @@
-# Created encapsulated postscript graphs
-*.eps
-
-# Created animation videos
-*.mp4
-*.gif
-
-# Intermediary animation files
-*.png
