@@ -3,7 +3,13 @@ Computational Physics: Exercise 2
 
 # Overview
 
-This is the actual code for my third year computational physics coursework.
+This contains the files for the code and report of Exercise 2 of Computational Physics 301, entitled "Partial Differential Equations". The exercise contains three parts:
+
+- Solving Laplace's equation in two dimensions;
+- Solving the electric potential of a finite capacitor, investigating in particular the limit of an infinite place capacitor;
+- Solving the heat diffusion equation for a hot metal rod.
+
+This branch contains the actual Python code used to produce the program.
 
 # Files
 
