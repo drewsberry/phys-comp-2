@@ -14,3 +14,7 @@
 
 # Intermediary graph files
 *-eps-converted-to.pdf
+
+# Vim files
+*~
+.*.swp
